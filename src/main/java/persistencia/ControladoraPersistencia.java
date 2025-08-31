@@ -18,21 +18,46 @@ public class ControladoraPersistencia {
         mascotaJpa.create(mascota);
     }
     
+    public void editarMascota(Mascota mascota) throws Exception {
+        
+        mascotaJpa.edit(mascota);
+    }
+    
+    
+    public void eliminarMascota(int numCliente) throws NonexistentEntityException {
+       
+        mascotaJpa.destroy(numCliente);
+    }
+    
     public List<Mascota> traerMascotas() {
     
         return mascotaJpa.findMascotaEntities();
     }
     
-      public void eliminarMascota(int numCliente) throws NonexistentEntityException {
-       
-          mascotaJpa.destroy(numCliente);
+    public Mascota traerMascotaPorId(int _numCliente) {
+        
+        return mascotaJpa.findMascota(_numCliente);
     }
+    
+  
+      
+    
     
     // Dueño controladores
     
     public void crearDuenio(Duenio duenio) {
+        
         duenioJpa.create(duenio);
     }
+
+    public void editarDuenio(Duenio duenio) throws Exception {
+      
+        duenioJpa.edit(duenio);
+    }
+
+  
+
+  
 
   
 

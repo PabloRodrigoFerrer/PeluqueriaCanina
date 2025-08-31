@@ -15,7 +15,7 @@ public class PeluqueriaCanina {
     public static void main(String[] args) {
         
         try {
-            UIManager.setLookAndFeel(new FlatDarkLaf());
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("No se pudo aplicar FlatLaf");
         }        

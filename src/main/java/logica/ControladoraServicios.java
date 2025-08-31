@@ -25,15 +25,33 @@ public class ControladoraServicios {
         controladoraPersistencia.crearMascota(mascota);
     }
     
-     public List<Mascota> traerMascotas() {
+    public void editarMascota(Mascota mascota,String nombre, String raza, String color, String esAlergico, String attEspecial, String observaciones, Duenio duenio) throws Exception {
+     
+         mascota.setNombre(nombre);
+         mascota.setRaza(raza);
+         mascota.setColor(color);
+         mascota.setEsAlergico(esAlergico);
+         mascota.setAttEspecial(attEspecial);
+         mascota.setObservaciones(observaciones);
+         mascota.setDuenio(duenio);
+        
+        controladoraPersistencia.editarMascota(mascota);
+    }
+    
+    public void eliminarMascota(int numCliente) throws NonexistentEntityException {
+         
+       controladoraPersistencia.eliminarMascota(numCliente);
+    }
+    
+    public List<Mascota> traerMascotas() {
         
          return controladoraPersistencia.traerMascotas();
     }
-     
-     public void eliminarMascota(int numCliente) throws NonexistentEntityException {
-         
-       controladoraPersistencia.eliminarMascota(numCliente);
-    } 
+    
+    public Mascota traerMascotaPorId(int _numCliente) {
+    
+        return controladoraPersistencia.traerMascotaPorId(_numCliente);
+    }
     
     
     // Servicios Duenio
@@ -51,6 +69,18 @@ public class ControladoraServicios {
         
         controladoraPersistencia.crearDuenio(duenio);
     }
+
+    public void editarDuenio(Duenio duenio, String nombre, String telefono) throws Exception {
+        
+        duenio.setNombre(nombre);
+        duenio.setTelefono(telefono);
+        
+        controladoraPersistencia.editarDuenio(duenio);
+    }
+
+    
+
+   
 
    
 

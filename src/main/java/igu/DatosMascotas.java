@@ -1,4 +1,3 @@
-
 package igu;
 
 import java.util.List;
@@ -10,14 +9,13 @@ import logica.ControladoraServicios;
 import logica.Mascota;
 import persistencia.exceptions.NonexistentEntityException;
 
-
 public class DatosMascotas extends javax.swing.JFrame {
 
     private MenuPrincipal _menu = null;
     private ControladoraServicios _controladoraServicios = null;
     
     public DatosMascotas(MenuPrincipal menu, ControladoraServicios controladora) {
-        
+
         _menu = menu;
         _controladoraServicios = controladora;
         initComponents();
@@ -35,7 +33,7 @@ public class DatosMascotas extends javax.swing.JFrame {
         tableMascotas = new javax.swing.JTable();
         lblTituloTabla = new javax.swing.JLabel();
         btnEliminar = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
         btnNavegarMenu = new javax.swing.JButton();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
@@ -59,7 +57,9 @@ public class DatosMascotas extends javax.swing.JFrame {
         lblTitulo.setFont(new java.awt.Font("Dialog", 0, 36)); // NOI18N
         lblTitulo.setText("Visualización de Datos");
 
+        tableMascotas.setAutoCreateRowSorter(true);
         tableMascotas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tableMascotas.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         tableMascotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -68,6 +68,7 @@ public class DatosMascotas extends javax.swing.JFrame {
 
             }
         ));
+        tableMascotas.setShowGrid(true);
         jScrollPane1.setViewportView(tableMascotas);
 
         lblTituloTabla.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -81,8 +82,13 @@ public class DatosMascotas extends javax.swing.JFrame {
             }
         });
 
-        btnModificar.setText("Modificar");
-        btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditar.setText("Editar");
+        btnEditar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelTablaLayout = new javax.swing.GroupLayout(panelTabla);
         panelTabla.setLayout(panelTablaLayout);
@@ -96,7 +102,7 @@ public class DatosMascotas extends javax.swing.JFrame {
                         .addGap(37, 37, 37)
                         .addGroup(panelTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
+                            .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
                     .addComponent(lblTituloTabla, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
@@ -111,7 +117,7 @@ public class DatosMascotas extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelTablaLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
@@ -171,106 +177,156 @@ public class DatosMascotas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNavegarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavegarMenuActionPerformed
-        
+
         navegarMenuPrincipal();
     }//GEN-LAST:event_btnNavegarMenuActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        
+
         cargarTabla();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       
-       if (tableMascotas.getRowCount() > 0){
-           
-           int numCliente = Integer.parseInt(String.valueOf( 
-                           tableMascotas.getValueAt(
-                                   tableMascotas.getSelectedRow(),0)));
-           
-           try {
-               
-               _controladoraServicios.eliminarMascota(numCliente);
-               mostrarMensaje("Eliminado correctamente");
-               cargarTabla();
-           } 
-           catch (NonexistentEntityException ex) {
-               
-               Logger.getLogger(DatosMascotas.class.getName()).log(Level.SEVERE, null, ex);
-           }
-       }
-       
-        
+
+        if (tableMascotas.getRowCount() > 0) {
+
+            if (tableMascotas.getSelectedRow() != -1) {
+                int numCliente = Integer.parseInt(String.valueOf(
+                        tableMascotas.getValueAt(
+                                tableMascotas.getSelectedRow(), 0)));
+
+                try {
+
+                    _controladoraServicios.eliminarMascota(numCliente);
+                    mostrarMensaje(
+                            "Eliminado correctamente",
+                            "Info",
+                            "Confirmación");
+                    
+                    cargarTabla();
+                    
+                } catch (NonexistentEntityException ex) {
+
+                    Logger.getLogger(DatosMascotas.class.getName())
+                            .log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+                
+                mostrarMensaje(
+                        "Debe seleccionar un registro",
+                        "Error",
+                        "Alerta");
+            }
+
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-    
-    private void navegarMenuPrincipal(){
-    
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        
+        if(tableMascotas.getRowCount() > 0){
+            
+            if(tableMascotas.getSelectedRow() != -1){
+                
+                int numCliente = Integer.parseInt(String.valueOf
+                        (tableMascotas.getValueAt(
+                                tableMascotas.getSelectedRow(), 0)));
+                
+                
+                FormularioEditarMascota formulario = new FormularioEditarMascota(
+                        _menu, 
+                        _controladoraServicios, 
+                        numCliente);
+                
+                formulario.setVisible(true);
+                formulario.setLocationRelativeTo(this);
+                this.dispose();
+            }
+        }
+        
+        
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void navegarMenuPrincipal() {
+
         this.dispose();
         _menu.setVisible(true);
         _menu.setLocationRelativeTo(this);
     }
-    
-    private void cargarTabla(){
-    
-        DefaultTableModel tablaModelo = new DefaultTableModel(){
+
+    private void cargarTabla() {
+
+        DefaultTableModel tablaModelo = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable (int row, int column){
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
         // nombres tabla
         String titulos[] = {
             "N° cliente",
             "Nombre",
             "Color",
-            "Raza", 
+            "Raza",
             "Alergico",
             "Att. Esp.",
             "Dueño",
             "Telefono"};
-            
-       tablaModelo.setColumnIdentifiers(titulos);
-       
-       //caga datos de la base de datos
-       List <Mascota> listaMascotas = _controladoraServicios.traerMascotas();
-       
-       if (listaMascotas != null){
-           
-           for (Mascota mascota : listaMascotas){
-               
-               Object[] entidad = {
-                   mascota.getNumCliente(),
-                   mascota.getNombre(),
-                   mascota.getColor(),
-                   mascota.getRaza(),
-                   mascota.getEsAlergico(),
-                   mascota.getAttEspecial(),
-                   mascota.getDuenio().getNombre(),
-                   mascota.getDuenio().getTelefono()
-               };
-               
-               tablaModelo.addRow(entidad);
-           }
-           
-           tableMascotas.setModel(tablaModelo);
-           
-       }
-    }
-    
-    private void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(
-                this,
-                mensaje,
-                "Confirmación",
-                JOptionPane.INFORMATION_MESSAGE);
+
+        tablaModelo.setColumnIdentifiers(titulos);
+
+        //caga datos de la base de datos
+        List<Mascota> listaMascotas = _controladoraServicios.traerMascotas();
+
+        if (listaMascotas != null) {
+
+            for (Mascota mascota : listaMascotas) {
+
+                Object[] entidad = {
+                    mascota.getNumCliente(),
+                    mascota.getNombre(),
+                    mascota.getColor(),
+                    mascota.getRaza(),
+                    mascota.getEsAlergico(),
+                    mascota.getAttEspecial(),
+                    mascota.getDuenio().getNombre(),
+                    mascota.getDuenio().getTelefono()
+                };
+
+                tablaModelo.addRow(entidad);
+            }
+
+            tableMascotas.setModel(tablaModelo);
+
+        }
     }
 
+    private void mostrarMensaje(String mensaje, String tipo, String titulo) {
+        
+        if(tipo.toLowerCase().equals("info")){
+            
+            JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                titulo,
+                JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        if (tipo.equals("Error")){
+            
+            JOptionPane.showMessageDialog(
+                this,
+                mensaje,
+                titulo,
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelFondo;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNavegarMenu;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JScrollPane jScrollPane1;

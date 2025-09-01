@@ -25,7 +25,7 @@ public class ControladoraServicios {
         controladoraPersistencia.crearMascota(mascota);
     }
     
-    public void editarMascota(Mascota mascota,String nombre, String raza, String color, String esAlergico, String attEspecial, String observaciones, Duenio duenio) throws Exception {
+    public void editarMascota(Mascota mascota,String nombre, String raza, String color, String esAlergico, String attEspecial, String observaciones) throws Exception {
      
          mascota.setNombre(nombre);
          mascota.setRaza(raza);
@@ -33,8 +33,7 @@ public class ControladoraServicios {
          mascota.setEsAlergico(esAlergico);
          mascota.setAttEspecial(attEspecial);
          mascota.setObservaciones(observaciones);
-         mascota.setDuenio(duenio);
-        
+         
         controladoraPersistencia.editarMascota(mascota);
     }
     

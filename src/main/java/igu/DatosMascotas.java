@@ -141,9 +141,9 @@ public class DatosMascotas extends javax.swing.JFrame {
                     .addGroup(PanelFondoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(225, 225, 225)
+                        .addGap(193, 193, 193)
                         .addComponent(btnNavegarMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
+                        .addGap(73, 73, 73))
                     .addGroup(PanelFondoLayout.createSequentialGroup()
                         .addComponent(panelTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(28, Short.MAX_VALUE))))
@@ -233,18 +233,18 @@ public class DatosMascotas extends javax.swing.JFrame {
                                 tableMascotas.getSelectedRow(), 0)));
                 
                 
+                DatosMascotas nuevoDatosMascotas = new DatosMascotas(_menu, _controladoraServicios);
                 FormularioEditarMascota formulario = new FormularioEditarMascota(
                         _menu, 
                         _controladoraServicios, 
-                        numCliente);
+                        numCliente,
+                        nuevoDatosMascotas);
                 
                 formulario.setVisible(true);
                 formulario.setLocationRelativeTo(this);
                 this.dispose();
             }
         }
-        
-        
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void navegarMenuPrincipal() {
@@ -298,7 +298,6 @@ public class DatosMascotas extends javax.swing.JFrame {
             }
 
             tableMascotas.setModel(tablaModelo);
-
         }
     }
 

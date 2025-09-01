@@ -4,23 +4,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import logica.ControladoraServicios;
-import logica.Duenio;
 import logica.Mascota;
 
 public class FormularioEditarMascota extends javax.swing.JFrame {
 
     
-    private MenuPrincipal _menuPrincipal = null;
+    private DatosMascotas _formularioDatosMascotas;            
     private ControladoraServicios _controladoraServicios = null;
     private int _numCliente;
     private Mascota _mascota = null;
-
-    public FormularioEditarMascota(MenuPrincipal menuPrincipal, ControladoraServicios controladora, int idCliente) {
+    private MenuPrincipal _menuPrincipal = null;
+    
+    public FormularioEditarMascota(MenuPrincipal menuPrincipal, ControladoraServicios controladora, int idCliente, DatosMascotas formulario) {
         
         initComponents();
         _menuPrincipal = menuPrincipal;
         _controladoraServicios = controladora;
         _numCliente = idCliente;
+        _formularioDatosMascotas = formulario;
     }
 
     @SuppressWarnings("unchecked")
@@ -319,10 +320,11 @@ public class FormularioEditarMascota extends javax.swing.JFrame {
                     txtColorMascota.getText(),
                     cbxAlergico.getSelectedItem().toString(),
                     cbxAttEspecial.getSelectedItem().toString(),
-                    txtObservaciones.getText(),
-                    _mascota.getDuenio());
+                    txtObservaciones.getText());
             
             mostrarMensaje("Modificación realizada con éxito");
+            
+            navegarDatosMascotas();
             
         } catch (Exception ex) {
             
@@ -362,7 +364,7 @@ public class FormularioEditarMascota extends javax.swing.JFrame {
         _menuPrincipal.setLocationRelativeTo(null);
     }
     
-    public void establecerDatos(){ 
+    private void establecerDatos(){ 
         
         _mascota = _controladoraServicios.traerMascotaPorId(_numCliente);
         
@@ -373,8 +375,14 @@ public class FormularioEditarMascota extends javax.swing.JFrame {
         cbxAlergico.setSelectedIndex(_mascota.getEsAlergico().equals("Si") ? 1 : 2);
         cbxAttEspecial.setSelectedIndex(_mascota.getAttEspecial().equals("Si") ? 1 : 2);
         txtNombreDuenio.setText(_mascota.getDuenio().getNombre());
-        txtTelefonoDuenio.setText(_mascota.getDuenio().getNombre());
+        txtTelefonoDuenio.setText(_mascota.getDuenio().getTelefono());
+    }
+    
+    private void navegarDatosMascotas(){
         
+        _formularioDatosMascotas.setVisible(true);
+        _formularioDatosMascotas.setLocationRelativeTo(this);
+        this.dispose();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
